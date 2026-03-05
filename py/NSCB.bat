@@ -1047,8 +1047,8 @@ set /p bs="Enter your choice: "
 set bs=%bs:"=%
 set "patchRSV=none"
 if /i "%bs%"=="b" goto checkagain
-if /i "%bs%"=="0" set "patchRSV=-pv false"
-if /i "%bs%"=="1" set "patchRSV=-pv true"
+if /i "%bs%"=="0" set "patchRSV=-pv 0"
+if /i "%bs%"=="1" set "patchRSV=-pv 335544750"
 if /i "%patchRSV%"=="none" echo WRONG CHOICE
 if /i "%patchRSV%"=="none" goto s_RSV_wrongchoice
 if /i "%bs%"=="0" goto s_KeyChange_skip
@@ -1872,7 +1872,7 @@ set patchRSV=none
 if /i "%bs%"=="b" goto multi_checkagain
 if /i "%bs%"=="0" set "patchRSV=-pv false"
 if /i "%bs%"=="0" set "vkey=-kp false"
-if /i "%bs%"=="1" set "patchRSV=-pv true"
+if /i "%bs%"=="1" set "patchRSV=-pv 336592896"
 if /i "%patchRSV%"=="none" echo WRONG CHOICE
 if /i "%patchRSV%"=="none" goto m_RSV_wrongchoice
 if /i "%bs%"=="0" goto m_KeyChange_skip
@@ -3025,7 +3025,7 @@ ECHO                         NINTENDO SWITCH CLEANER AND BUILDER
 ECHO                      (THE XCI MULTI CONTENT BUILDER AND MORE)
 ECHO -------------------------------------------------------------------------------------
 ECHO =============================     BY JULESONTHEROAD     =============================
-ECHO -------------------------------------------------------------------------------------
+ECHO ----------------------------------   Kronos238 Mod  ---------------------------------
 ECHO "                                POWERED BY SQUIRREL                                "
 ECHO "                    BASED ON THE WORK OF BLAWAR AND LUCA FRAGA                     "
 ECHO                                  VERSION 1.01 (NEW)
