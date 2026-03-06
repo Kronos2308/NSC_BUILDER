@@ -7,7 +7,10 @@ class Content(IntEnum):
 	MANUAL = 0x3
 	DATA = 0x4
 	PUBLIC_DATA = 0x5
-
+	
+	def __str__(self):
+		return f"Content.{self.name}"
+		
 class Fs(IntEnum):
 	NONE = 0x0
 	PFS0 = 0x2
