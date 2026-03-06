@@ -3338,6 +3338,54 @@ class Nsp(Pfs0):
 							break
 		return 	programSDKversion,dataSDKversion
 
+	def getKeyTarget(self):
+		keyv = 0
+		for nca in self:
+			if type(nca) == Nca:
+				if  str(nca.header.contentType) == 'Content.PROGRAM':
+					print(str(nca.header.contentType))
+					print(nca.header.cryptoType2)
+					keyv = nca.header.cryptoType2
+					
+		return keyv
+	
+	#get meinimun data to rename a nsp name[id][vVER].nsp
+	def getNspData(self):
+		keyv = 0
+		#print(self.read_nacp())
+		feed=''
+		dict={}
+		
+		dict['type'] = self.nsptype()
+		dict['id'] = self.getId()
+		dict['ver'] = self.getVersion()
+
+		try:
+			#dict=self.get_data_from_nacp({})
+			for nca in self:
+				if type(nca) == Nca:
+					if str(nca.header.contentType) == 'Content.CONTROL':
+						f=io.BytesIO(nca.ret_nacp());f.seek(0)
+						nacp = Nacp()
+						temp={}
+						temp['RegionalNames'],temp['RegionalEditors']=nacp.get_NameandPub(f.read(0x300*15))
+						names = temp['RegionalNames']
+
+						if '0' in names:
+							dict['name'] = names['0']
+						else:
+							dict['name'] = next(iter(names.values()))
+
+		except BaseException as e:
+			Print.error('Exception: ' + str(e))
+			print(self._path)
+			s = os.path.basename(self._path)
+			dict['name'] = re.sub(r"\[.*?\]", "", s).replace(".nsp","").strip()
+		
+		dict['full_name'] = f"{dict.get('name','')} [{dict.get('id','')}][v{dict.get('ver','0')}].nsp"
+		print(dict)
+		return dict
+
 	def print_fw_req(self,trans=True,roma=True):
 		feed=''
 		for nca in self:
