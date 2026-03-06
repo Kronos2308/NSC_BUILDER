@@ -9661,8 +9661,7 @@ class Nsp(Pfs0):
 	def get_data_from_cnmt(self,cnmtname):
 		for nca in self:
 			if type(nca) == Nca:
-
-				if 	str(nca.header.contentType) == '1':
+				if 	str(nca.header.contentType) == 'Content.META':
 					if str(nca._path)==cnmtname:
 						crypto1=nca.header.getCryptoType()
 						crypto2=nca.header.getCryptoType2()
