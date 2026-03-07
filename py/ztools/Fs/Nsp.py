@@ -3355,15 +3355,18 @@ class Nsp(Pfs0):
 		#print(self.read_nacp())
 		feed=''
 		dict={}
+		s = os.path.basename(self._path)
+		name = re.sub(r"\[.*?\]", "", s).replace(".nsp","").strip()
 		
-		dict['type'] = self.nsptype()
 		dict['id'] = self.getId()
 		dict['ver'] = self.getVersion()
+		dict['type'] = self.nsptype() if self.nsptype() == "DLC" else self.nsptype().capitalize()
 
 		try:
 			#dict=self.get_data_from_nacp({})
 			for nca in self:
 				if type(nca) == Nca:
+					#print(str(nca.header.contentType))
 					if str(nca.header.contentType) == 'Content.CONTROL':
 						f=io.BytesIO(nca.ret_nacp());f.seek(0)
 						nacp = Nacp()
@@ -3379,11 +3382,10 @@ class Nsp(Pfs0):
 		except BaseException as e:
 			Print.error('Exception: ' + str(e))
 			print(self._path)
-			s = os.path.basename(self._path)
-			dict['name'] = re.sub(r"\[.*?\]", "", s).replace(".nsp","").strip()
+			dict['name'] = name
 		
-		dict['full_name'] = f"{dict.get('name','')} [{dict.get('id','')}][v{dict.get('ver','0')}].nsp"
-		print(dict)
+		dict['full_name'] = f"{dict.get('name',name)} [{dict.get('id','')}][v{dict.get('ver','0')}].nsp"
+		#print(dict)
 		return dict
 
 	def print_fw_req(self,trans=True,roma=True):
