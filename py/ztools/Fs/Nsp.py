@@ -3343,8 +3343,8 @@ class Nsp(Pfs0):
 		for nca in self:
 			if type(nca) == Nca:
 				if  str(nca.header.contentType) == 'Content.PROGRAM':
-					print(str(nca.header.contentType))
-					print(nca.header.cryptoType2)
+					#print(str(nca.header.contentType))
+					#print(nca.header.cryptoType2)
 					keyv = nca.header.cryptoType2
 					
 		return keyv
@@ -3357,17 +3357,21 @@ class Nsp(Pfs0):
 		dict={}
 		s = os.path.basename(self._path)
 		name = re.sub(r"\[.*?\]", "", s).replace(".nsp","").strip()
-		
-		dict['id'] = self.getId()
-		dict['ver'] = self.getVersion()
-		dict['type'] = self.nsptype() if self.nsptype() == "DLC" else self.nsptype().capitalize()
-
 		try:
+			
 			#dict=self.get_data_from_nacp({})
+			dict['id'] = self.getId()
+			dict['ver'] = self.getVersion()
+			dict['type'] = self.nsptype() if self.nsptype() == "DLC" else self.nsptype().capitalize()
+
 			for nca in self:
 				if type(nca) == Nca:
 					#print(str(nca.header.contentType))
 					if str(nca.header.contentType) == 'Content.CONTROL':
+						
+						if dict['id'] == '0000000000000000':
+							dict['id'] = nca.header.titleId
+
 						f=io.BytesIO(nca.ret_nacp());f.seek(0)
 						nacp = Nacp()
 						temp={}
@@ -3382,9 +3386,8 @@ class Nsp(Pfs0):
 		except BaseException as e:
 			Print.error('Exception: ' + str(e))
 			print(self._path)
-			dict['name'] = name
-		
-		dict['full_name'] = f"{dict.get('name',name)} [{dict.get('id','')}][v{dict.get('ver','0')}].nsp"
+			
+		dict['name'] = dict.get('name',name)
 		#print(dict)
 		return dict
 
@@ -9825,7 +9828,7 @@ class Nsp(Pfs0):
 		for nca in self:
 			if type(nca) == Nca:
 				if 	str(nca.header.contentType) == 'Content.CONTROL':
-					if target==str(nca._path):
+					if True:#target==str(nca._path):
 						offset=nca.get_nacp_offset()
 						for f in nca:
 							f.seek(offset)
