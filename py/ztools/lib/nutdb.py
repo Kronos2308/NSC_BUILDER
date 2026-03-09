@@ -163,14 +163,15 @@ def getnutdb():
 					nutfile.write(data)
 					if not data:
 						break
-			with open(tempfile) as json_file:					
+			with open(tempfile, encoding="utf-8") as json_file:		
 				data = json.load(json_file)	
 			app_json = json.dumps(data, indent=4)		
 			with open(nutdbfile, 'w') as json_file:
 			  json_file.write(app_json)			
 			try:os.remove(tempfile)
 			except:pass	
-		except:
+		except BaseException as e:
+			Print.error('Exception: ' + str(e))					
 			try:
 				response = requests.get(json_url_mirror, stream=True)
 			except BaseException as e:
